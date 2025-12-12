@@ -43,8 +43,17 @@ export const nearbyStores = async (req, res) => {
       { $sort: { 'dist.calculated': 1 } },
       { $project: { fullName:1, email:1, location:1, items:1, 'dist.calculated':1 } }
     ]);
-
-    return res.json(success('Nearby sellers fetched', sellers));
+    const mapped = sellers.map(s => ({
+    SellerId: s._id,
+    SellerName: s.fullName,
+    SellerLatitude: s.location.coordinates[1],
+    SellerLongitude: s.location.coordinates[0],
+    Price: s.items?.[0]?.price || 0,
+    IsAvailable: s.items?.[0]?.inStock ? 1 : 0,
+    UpdatedOn: s.items?.[0]?.updatedOn || null,
+    DistanceKm: s.dist?.calculated || 0
+}));
+    return res.json(success('Nearby sellers fetched', mapped));
   } catch (err) {
     console.error(err);
     return res.json(error('Failed to fetch nearby sellers'));
