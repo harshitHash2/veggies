@@ -5,7 +5,7 @@ import { success, error } from '../utils/response.js';
 import { sendMail } from '../utils/mailer.js';
 
 function genOtp() {
-  return Math.floor(100000 + Math.random() * 900000).toString();
+  return Math.floor(1000 + Math.random() * 9000).toString();
 }
 
 export const signup = async (req, res) => {
@@ -46,7 +46,7 @@ export const verifyotp = async (req, res) => {
     if (!email || !otp) return res.json(error('Email and OTP required', -1));
     const user = await User.findOne({ email });
     if (!user) return res.json(error('User not found', -2));
-    if (user.isVerified) return res.json(error('User already verified', -3));
+    //if (user.isVerified) return res.json(error('User already verified', -3));
     if (!user.otp || user.otp !== otp) return res.json(error('Invalid OTP', -4));
     if (user.otpExpire < new Date()) return res.json(error('OTP expired', -5));
     user.isVerified = true;
