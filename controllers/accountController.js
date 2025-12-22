@@ -30,7 +30,7 @@ export const signup = async (req, res) => {
 
     const user = await User.create({ fullName, email, password: hash, role: role === "1" ? 'seller' : 'buyer' || 'buyer', otp, otpExpire });
     try {
-      await sendMail(email, 'Signup OTP', `Your OTP is ${otp}`, `<p>Your OTP: <b>${otp}</b></p>`);
+      sendMail(email, 'Signup OTP', `Your OTP is ${otp}`, `<p>Your OTP: <b>${otp}</b></p>`);
     } catch (e) {
       console.warn('Mail send failed', e);
     }
@@ -73,7 +73,7 @@ export const resendOtp = async (req, res) => {
     user.otpExpire = new Date(Date.now() + 10*60*1000);
     await user.save();
     try {
-      await sendMail(email, 'Resent OTP', `Your OTP is ${otp}`, `<p>Your OTP: <b>${otp}</b></p>`);
+      sendMail(email, 'Resent OTP', `Your OTP is ${otp}`, `<p>Your OTP: <b>${otp}</b></p>`);
     } catch (e) { console.warn('Mail send failed', e); }
     return res.json(success('OTP resent'));
   } catch (err) {
@@ -93,7 +93,7 @@ export const forgotPassword = async (req, res) => {
     user.resetOtpExpire = new Date(Date.now() + 10*60*1000);
     await user.save();
     try {
-      await sendMail(email, 'Password Reset OTP', `Your reset OTP is ${otp}`, `<p>Your reset OTP: <b>${otp}</b></p>`);
+      sendMail(email, 'Password Reset OTP', `Your reset OTP is ${otp}`, `<p>Your reset OTP: <b>${otp}</b></p>`);
     } catch (e) { console.warn('Mail send failed', e); }
     return res.json(success('Reset OTP sent'));
   } catch (err) {
