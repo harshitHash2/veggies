@@ -29,13 +29,13 @@ export const signup = async (req, res) => {
     const otpExpire = new Date(Date.now() + 10*60*1000); // 10 minutes
 
     const user = await User.create({ fullName, email, password: hash, role: role === "1" ? 'seller' : 'buyer' || 'buyer', otp, otpExpire });
-    // try {
-    //   console.log('Sending mail to', email, 'with OTP', otp);
-    //   await sendMail(email, 'Signup OTP', `Your OTP is ${otp}`, `<p>Your OTP: <b>${otp}</b></p>`);
-    // } catch (e) {
-    //   console.warn('Mail send failed', e);
-    //   return res.json(error('Signup failed'));
-    // }
+    try {
+      console.log('Sending mail to', email, 'with OTP', otp);
+      await sendMail(email, 'Signup OTP', `Your OTP is ${otp}`, `<p>Your OTP: <b>${otp}</b></p>`);
+    } catch (e) {
+      console.warn('Mail send failed', e);
+      return res.json(error('Signup failed'));
+    }
     return res.json(success('User created, OTP sent', { userId: user._id }));
   } catch (err) {
     console.error(err);
@@ -74,9 +74,9 @@ export const resendOtp = async (req, res) => {
     user.otp = otp;
     user.otpExpire = new Date(Date.now() + 10*60*1000);
     await user.save();
-    // try {
-    //   await sendMail(email, 'Resent OTP', `Your OTP is ${otp}`, `<p>Your OTP: <b>${otp}</b></p>`);
-    // } catch (e) { console.warn('Mail send failed', e); }
+    try {
+      await sendMail(email, 'Resent OTP', `Your OTP is ${otp}`, `<p>Your OTP: <b>${otp}</b></p>`);
+    } catch (e) { console.warn('Mail send failed', e); }
     return res.json(success('OTP resent'));
   } catch (err) {
     console.error(err);
