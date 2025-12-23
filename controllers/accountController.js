@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { success, error } from '../utils/response.js';
 import { sendMail } from '../utils/mailer.js';
+import { sendNotification } from '../utils/notification.js';
 
 function genOtp() {
   // return Math.floor(1000 + Math.random() * 9000).toString();
@@ -31,7 +32,9 @@ export const signup = async (req, res) => {
     const user = await User.create({ fullName, email, password: hash, role: role === "1" ? 'seller' : 'buyer' || 'buyer', otp, otpExpire });
     try {
       console.log('Sending mail to', email, 'with OTP', otp);
-      await sendMail(email, 'Signup OTP', `Your OTP is ${otp}`, `<p>Your OTP: <b>${otp}</b></p>`);
+      // await sendMail(email, 'Signup OTP', `Your OTP is ${otp}`, `<p>Your OTP: <b>${otp}</b></p>`);
+      
+      const result = await sendNotification({  email, type: "OTP_SENT", payload: otp });
     } catch (e) {
       console.warn('Mail send failed', e);
       return res.json(error('Signup failed'));
@@ -75,7 +78,8 @@ export const resendOtp = async (req, res) => {
     user.otpExpire = new Date(Date.now() + 10*60*1000);
     await user.save();
     try {
-      await sendMail(email, 'Resent OTP', `Your OTP is ${otp}`, `<p>Your OTP: <b>${otp}</b></p>`);
+      // await sendMail(email, 'Resent OTP', `Your OTP is ${otp}`, `<p>Your OTP: <b>${otp}</b></p>`);
+      const result = await sendNotification({  email, type: "OTP_SENT", payload: otp });
     } catch (e) { console.warn('Mail send failed', e); }
     return res.json(success('OTP resent'));
   } catch (err) {
@@ -94,9 +98,10 @@ export const forgotPassword = async (req, res) => {
     user.resetOtp = otp;
     user.resetOtpExpire = new Date(Date.now() + 10*60*1000);
     await user.save();
-    // try {
-    //   await sendMail(email, 'Password Reset OTP', `Your reset OTP is ${otp}`, `<p>Your reset OTP: <b>${otp}</b></p>`);
-    // } catch (e) { console.warn('Mail send failed', e); }
+    try {
+      // await sendMail(email, 'Password Reset OTP', `Your reset OTP is ${otp}`, `<p>Your reset OTP: <b>${otp}</b></p>`);
+      const result = await sendNotification({  email, type: "OTP_SENT", payload: otp });
+    } catch (e) { console.warn('Mail send failed', e); }
     return res.json(success('Reset OTP sent'));
   } catch (err) {
     console.error(err);
