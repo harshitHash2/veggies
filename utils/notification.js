@@ -105,7 +105,7 @@ export const sendNotification = async ({ email, type, payload }) => {
   const { subject, html } = template(payload);
   const msg = {
     to: email,
-  from: 'harshit.chauhan2015@gmail.com', // Use the email address or domain you verified above
+  from: process.env.SENDGRID_MAIL || 'rajat@gnxtsystems.com', // Use the email address or domain you verified above
   subject: subject,
   text: 'twilio',
   html: html,
