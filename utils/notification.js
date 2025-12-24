@@ -8,21 +8,64 @@ const notificationTemplates = {
       <!DOCTYPE html>
       <html>
       <body style="margin:0; padding:0; background:#f5f6fa; font-family:Arial, sans-serif;">
-        <table width="100%" style="padding:20px 0; background:#f5f6fa;">
+        <table width="600" cellpadding="0" cellspacing="0"
+          style="background:#ffffff; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.08); padding:30px;">
+
+          <!-- Logo / Header -->
           <tr>
-            <td align="center">
-              <table width="600" style="background:#fff; border-radius:8px; overflow:hidden;">
-                <tr>
-                  <td style="background:#2563eb; color:#fff; padding:20px; font-size:20px; font-weight:bold;">
-                    OTP : ${otp}
-                  </td>
-                </tr>
-
-                
-
-              </table>
+            <td align="center" style="padding-bottom:20px;">
+              <h1 style="margin:0; color:#2563eb;">Account Verification</h1>
             </td>
           </tr>
+
+          <!-- Message -->
+          <tr>
+            <td style="color:#333; font-size:16px; line-height:1.6;">
+              <p>Hello,</p>
+
+              <p>
+                To continue, please use the One-Time Password (OTP) below to verify your request.
+              </p>
+
+              <!-- OTP Box -->
+              <div style="text-align:center; margin:30px 0;">
+                <span style="
+                  display:inline-block;
+                  padding:16px 32px;
+                  font-size:26px;
+                  font-weight:bold;
+                  letter-spacing:6px;
+                  color:#ffffff;
+                  background:linear-gradient(135deg, #2563eb, #1e40af);
+                  border-radius:8px;
+                ">
+                  ${otp}
+                </span>
+              </div>
+
+              <p>
+                This OTP is valid for a limited time.  
+                Please do not share this code with anyone for security reasons.
+              </p>
+
+              <p>
+                If you did not request this, you can safely ignore this email.
+              </p>
+
+              <p style="margin-top:30px;">
+                Regards,<br />
+                <strong>Support Team, Veggies</strong>
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td align="center" style="padding-top:25px; font-size:12px; color:#888;">
+              © 2025 Veggies. All rights reserved.
+            </td>
+          </tr>
+
         </table>
       </body>
       </html>
