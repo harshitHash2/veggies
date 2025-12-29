@@ -6,8 +6,8 @@ import { sendMail } from '../utils/mailer.js';
 import { sendNotification } from '../utils/notification.js';
 
 function genOtp() {
-  // return Math.floor(1000 + Math.random() * 9000).toString();
-  return '0000';
+  return Math.floor(1000 + Math.random() * 9000).toString();
+  // return '0000';
 }
 
 export const signup = async (req, res) => {
