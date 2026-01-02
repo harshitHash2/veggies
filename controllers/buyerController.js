@@ -7,8 +7,8 @@ export const nearbyStores = async (req, res) => {
     const { productId } = req.params;
     const { latitude, longitude, radiusKm = 10 } = req.body; // using body as POST
     console.log(latitude, longitude, productId, req.body)
-    const buyer = await User.findById(req.user.id);
-    if (!buyer) return res.json(error('Buyer not found', -1));
+    // const buyer = await User.findById(req.user.id);
+    // if (!buyer) return res.json(error('Buyer not found', -1));
     // if (!buyer.location || !Array.isArray(buyer.location.coordinates)) return res.json(error('Buyer location not set', -2));
 
     // const coords = buyer.location.coordinates; // [lng, lat]
